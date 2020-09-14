@@ -1,0 +1,28 @@
+server:
+  port: 7011
+spring:
+  datasource:
+    url: jdbc:postgresql://192.168.xx.xx:5432/middleground?stringtype=unspecified
+    username: xx
+    password: xx
+    driver-class-name: org.postgresql.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    filters: stat
+    maxActive: 15
+    initialSize: 3
+    maxWait: 5000
+    minIdle: 3
+    timeBetweenEvictionRunsMillis: 90000
+    minEvictableIdleTimeMillis: 1800000
+    validationQuery: select 'x'
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    maxOpenPreparedStatements: 20
+
+  application:
+    name: scalog-task
+
+mybatis:
+  mapperLocations: classpath:mapper/*.xml
