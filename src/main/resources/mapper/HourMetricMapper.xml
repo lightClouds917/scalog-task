@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.java4all.scalogtask.dao.LogInfoDao" >
+  <resultMap id="HourMetricBaseResultMap" type="com.java4all.scalogtask.entity.HourMetric" >
+    <id column="id" property="id" jdbcType="CHAR" />
+    <result column="country_name" property="countryName" jdbcType="CHAR" />
+    <result column="group_name" property="groupName" jdbcType="CHAR" />
+    <result column="organization_name" property="organizationName" jdbcType="CHAR" />
+    <result column="company_name" property="companyName" jdbcType="CHAR" />
+    <result column="project_name" property="projectName" jdbcType="CHAR" />
+    <result column="active_user" property="activeUser" jdbcType="INTEGER" />
+    <result column="request" property="request" jdbcType="INTEGER" />
+    <result column="year" property="year" jdbcType="INTEGER" />
+    <result column="month" property="month" jdbcType="INTEGER" />
+    <result column="day" property="day" jdbcType="INTEGER" />
+    <result column="hour" property="hour" jdbcType="INTEGER" />
+    <result column="gmt_create" property="gmtCreate" jdbcType="TIMESTAMP" />
+    <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+  </resultMap>
+
+
+</mapper>

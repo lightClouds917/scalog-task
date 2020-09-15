@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.java4all.scalogtask.dao.LogInfoDao" >
+  <resultMap id="BaseResultMap" type="com.java4all.scalogtask.entity.LogInfo" >
+    <id column="id" property="id" jdbcType="CHAR" />
+    <result column="country_name" property="countryName" jdbcType="CHAR" />
+    <result column="group_name" property="groupName" jdbcType="CHAR" />
+    <result column="organization_name" property="organizationName" jdbcType="CHAR" />
+    <result column="company_name" property="companyName" jdbcType="CHAR" />
+    <result column="project_name" property="projectName" jdbcType="CHAR" />
+    <result column="module_name" property="moduleName" jdbcType="CHAR" />
+    <result column="function_name" property="functionName" jdbcType="CHAR" />
+    <result column="class_name" property="className" jdbcType="CHAR" />
+    <result column="method_name" property="methodName" jdbcType="CHAR" />
+    <result column="method_type" property="methodType" jdbcType="CHAR" />
+    <result column="url" property="url" jdbcType="CHAR" />
+    <result column="request_params" property="requestParams" jdbcType="CHAR" />
+    <result column="result" property="result" jdbcType="CHAR" />
+    <result column="remark" property="remark" jdbcType="CHAR" />
+    <result column="cost" property="cost" jdbcType="INTEGER" />
+    <result column="ip" property="ip" jdbcType="CHAR" />
+    <result column="user_id" property="userId" jdbcType="CHAR" />
+    <result column="user_name" property="userName" jdbcType="CHAR" />
+    <result column="client_type" property="clientType" jdbcType="CHAR" />
+    <result column="user_agent" property="userAgent" jdbcType="CHAR" />
+    <result column="log_type" property="logType" jdbcType="INTEGER" />
+    <result column="error_message" property="errorMessage" jdbcType="CHAR" />
+    <result column="error_stack_trace" property="errorStackTrace" jdbcType="CHAR" />
+    <result column="gmt_create" property="gmtCreate" jdbcType="TIMESTAMP" />
+    <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+  </resultMap>
+
+  <select id="getAll" resultMap="BaseResultMap">
+    select  * from log_info limit 20;
+  </select>
+
+  <select id="countActiveUserAndRequestEveryHour" resultType="com.java4all.scalogtask.entity.HourMetric">
+    SELECT
+      country_name AS countryName,
+      group_name AS groupName,
+      organization_name organizationName,
+      company_name AS companyName,
+      project_name AS projectName,
+      DATE_TRUNC( 'HOUR', gmt_create ) AS time,
+      date_part( 'YEAR', gmt_create ) AS year,
+      date_part( 'MONTH', gmt_create ) AS month,
+      date_part( 'DAY', gmt_create ) AS day,
+      date_part( 'HOUR', gmt_create ) AS hour,
+      COUNT ( id ) AS request,
+      COUNT ( user_id ) AS activeUser
+    FROM
+      log_info
+    WHERE
+      1 = 1
+    GROUP BY
+      country_name,group_name,organization_name,company_name,project_name,time,year,month,day,hour
+  </select>
+
+  <select id="countActiveUserAndRequestEveryHourYesterday" resultType="com.java4all.scalogtask.entity.HourMetric">
+    SELECT
+    country_name AS countryName,
+    group_name AS groupName,
+    organization_name organizationName,
+    company_name AS companyName,
+    project_name AS projectName,
+    DATE_TRUNC( 'HOUR', gmt_create ) AS time,
+    date_part( 'YEAR', gmt_create ) AS year,
+    date_part( 'MONTH', gmt_create ) AS month,
+    date_part( 'DAY', gmt_create ) AS day,
+    date_part( 'HOUR', gmt_create ) AS hour,
+    COUNT ( id ) AS request,
+    COUNT ( user_id ) AS activeUser
+    FROM
+    log_info
+    WHERE
+    1 = 1
+    AND gmt_create > CURRENT_DATE - 1
+    AND gmt_create &lt; CURRENT_DATE
+    GROUP BY
+    country_name,group_name,organization_name,company_name,project_name,time,year,month,day,hour
+  </select>
+
+</mapper>
