@@ -9,7 +9,7 @@ import lombok.Data;
 @Data
 public class HourMetric {
 
-    private Long id;
+    private String id;
 
     /**国家*/
     private String countryName;
@@ -22,15 +22,11 @@ public class HourMetric {
     /**项目名称*/
     private String projectName;
     /**活跃用户数量*/
-    private String activeUser;
+    private Integer activeUser;
     /**请求数量*/
-    private String request;
+    private Integer request;
     /**时间*/
-    private Date time;
-    private Integer year;
-    private Integer month;
-    private Integer day;
-    private Integer hour;
+    private Date createTime;
 
     private Date gmtCreate;
     private Date gmtModified;

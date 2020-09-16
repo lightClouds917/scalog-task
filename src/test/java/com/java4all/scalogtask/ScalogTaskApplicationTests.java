@@ -1,8 +1,10 @@
 package com.java4all.scalogtask;
 
+import com.java4all.scalogtask.dao.HourMetricDao;
 import com.java4all.scalogtask.entity.HourMetric;
 import com.java4all.scalogtask.entity.LogInfo;
 import com.java4all.scalogtask.service.LogInfoService;
+import com.java4all.scalogtask.util.SourceUtil;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -14,6 +16,8 @@ class ScalogTaskApplicationTests {
 
     @Autowired
     private LogInfoService logInfoService;
+    @Autowired
+    private HourMetricDao hourMetricDao;
 
 
     @Test
@@ -28,14 +32,23 @@ class ScalogTaskApplicationTests {
     
     @Test
     void testCountActiveUserAndRequestEveryHour(){
-        List<HourMetric> hourMetrics = logInfoService.countActiveUserAndRequestEveryHour();
-        Assertions.assertTrue(hourMetrics.size() > 0);
+        String projectNames = "middleground-pro-message,middleground-pro-user,middleground-pro-approval,"
+                + "middleground-pro-thirdpt,middleground-pro-common-service,middleground-pro-business-analysis";
+        logInfoService.countActiveUserAndRequestEveryHour(projectNames);
     }
 
     @Test
     void testCountActiveUserAndRequestEveryHourYesterday(){
         List<HourMetric> hourMetrics = logInfoService.countActiveUserAndRequestEveryHourYesterday();
         Assertions.assertTrue(hourMetrics.size() > 0);
+    }
+
+    @Test
+    void testInsert(){
+        HourMetric hourMetric = new HourMetric();
+        hourMetric.setId(SourceUtil.generateId());
+        hourMetric.setCompanyName("兰亮");
+        hourMetricDao.insert(hourMetric);
     }
 
 }
