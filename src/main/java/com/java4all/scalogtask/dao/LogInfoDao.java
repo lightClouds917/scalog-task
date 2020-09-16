@@ -12,8 +12,9 @@ import tk.mybatis.mapper.common.Mapper;
  */
 @Repository
 public interface LogInfoDao extends Mapper<LogInfo> {
+
     List<LogInfo>  getAll();
+
     List<HourMetric> countActiveUserAndRequestEveryHour(@Param("projectName") String projectName,@Param("day") Integer day);
-    List<HourMetric> countActiveUserAndRequestEveryHourYesterday();
 
 }

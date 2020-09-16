@@ -65,28 +65,4 @@
     country_name,group_name,organization_name,company_name,project_name,createTime;
   </select>
 
-  <select id="countActiveUserAndRequestEveryHourYesterday" resultType="com.java4all.scalogtask.entity.HourMetric">
-    SELECT
-    country_name AS countryName,
-    group_name AS groupName,
-    organization_name organizationName,
-    company_name AS companyName,
-    project_name AS projectName,
-    DATE_TRUNC( 'HOUR', gmt_create ) AS time,
-    date_part( 'YEAR', gmt_create ) AS year,
-    date_part( 'MONTH', gmt_create ) AS month,
-    date_part( 'DAY', gmt_create ) AS day,
-    date_part( 'HOUR', gmt_create ) AS hour,
-    COUNT ( id ) AS request,
-    COUNT ( user_id ) AS activeUser
-    FROM
-    log_info
-    WHERE
-    1 = 1
-    AND gmt_create > CURRENT_DATE - 1
-    AND gmt_create &lt; CURRENT_DATE
-    GROUP BY
-    country_name,group_name,organization_name,company_name,project_name,time,year,month,day,hour
-  </select>
-
 </mapper>

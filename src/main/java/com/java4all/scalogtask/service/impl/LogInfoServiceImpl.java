@@ -51,8 +51,21 @@ public class LogInfoServiceImpl implements LogInfoService {
     }
 
     @Override
-    public List<HourMetric> countActiveUserAndRequestEveryHourYesterday() {
-        List<HourMetric> hourMetrics = logInfoDao.countActiveUserAndRequestEveryHourYesterday();
-        return hourMetrics;
+    public void countActiveUserAndRequestEveryHourYesterday(String projectNames) {
+        String[] names = projectNames.split(",");
+        Arrays.asList(names).parallelStream().forEach(name->{
+            List<HourMetric> hourMetrics = logInfoDao.countActiveUserAndRequestEveryHour(name,1);
+            if(hourMetrics.size() > 0){
+                hourMetrics.parallelStream().forEach(hourMetric -> {
+                    hourMetric.setId(SourceUtil.generateId());
+                    hourMetric.setGmtCreate(new Date());
+                    hourMetric.setGmtModified(new Date());
+                    hourMetricDao.insert(hourMetric);
+                });
+            }
+        });
+
+
+
     }
 }
