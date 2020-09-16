@@ -19,6 +19,8 @@ class ScalogTaskApplicationTests {
     @Autowired
     private HourMetricDao hourMetricDao;
 
+    private final String projectNames = "middleground-pro-message,middleground-pro-user,middleground-pro-approval,"
+            + "middleground-pro-thirdpt,middleground-pro-common-service,middleground-pro-business-analysis";
 
     @Test
     void contextLoads() {
@@ -32,15 +34,12 @@ class ScalogTaskApplicationTests {
     
     @Test
     void testCountActiveUserAndRequestEveryHour(){
-        String projectNames = "middleground-pro-message,middleground-pro-user,middleground-pro-approval,"
-                + "middleground-pro-thirdpt,middleground-pro-common-service,middleground-pro-business-analysis";
         logInfoService.countActiveUserAndRequestEveryHour(projectNames);
     }
 
     @Test
     void testCountActiveUserAndRequestEveryHourYesterday(){
-        List<HourMetric> hourMetrics = logInfoService.countActiveUserAndRequestEveryHourYesterday();
-        Assertions.assertTrue(hourMetrics.size() > 0);
+        logInfoService.countActiveUserAndRequestEveryHourYesterday(projectNames);
     }
 
     @Test
