@@ -6,6 +6,7 @@ import lombok.Data;
  * @author wangzhongxiang
  */
 @Data
+@Deprecated
 public class MonthMetric {
     private Long id;
 
