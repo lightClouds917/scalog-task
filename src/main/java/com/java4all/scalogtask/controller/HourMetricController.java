@@ -23,6 +23,11 @@ public class HourMetricController {
         return v + LocalDateTime.now().toString();
     }
 
+    /**
+     * 测试接口
+     * @param v
+     * @return
+     */
     @GetMapping("getAll")
     public List<LogInfo> getAll(String v){
         System.out.println(v);
@@ -30,4 +35,28 @@ public class HourMetricController {
         return all;
     }
 
+    /**
+     * 获取所有的项目名称
+     * @return
+     */
+    @GetMapping("getProjectNames")
+    public List<String> getProjectNames(){
+        return logInfoService.getProjectNames();
+    }
+
+    /**
+     * 统计历史数据进入hour_metric
+     */
+    @GetMapping("countActiveUserAndRequestEveryHour")
+    public void countActiveUserAndRequestEveryHour(){
+        logInfoService.countActiveUserAndRequestEveryHour();
+    }
+
+    /**
+     * 统计前一天数据进入hour_metric
+     */
+    @GetMapping("countActiveUserAndRequestEveryHourYesterday")
+    public void countActiveUserAndRequestEveryHourYesterday(){
+        logInfoService.countActiveUserAndRequestEveryHourYesterday();
+    }
 }

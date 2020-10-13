@@ -30,6 +30,10 @@
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
   </resultMap>
 
+  <select id="getProjectNames" resultType="string">
+    select distinct(project_name) from log_info li where gmt_create > current_date ;
+  </select>
+
   <select id="getAll" resultMap="BaseResultMap">
     select  * from log_info limit 20;
   </select>

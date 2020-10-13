@@ -16,4 +16,5 @@ public interface LogInfoDao extends Mapper<LogInfo> {
 
     List<HourMetric> countActiveUserAndRequestEveryHour(@Param("projectName") String projectName,@Param("day") Integer day);
 
+    List<String> getProjectNames();
 }

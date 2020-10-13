@@ -7,7 +7,6 @@ import com.java4all.scalogtask.entity.LogInfo;
 import com.java4all.scalogtask.service.LogInfoService;
 import com.java4all.scalogtask.util.SourceUtil;
 import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import org.slf4j.Logger;
@@ -28,15 +27,25 @@ public class LogInfoServiceImpl implements LogInfoService {
     @Autowired
     private HourMetricDao hourMetricDao;
 
+    /**
+     * 获取所有的项目名称
+     */
+    @Override
+    public List<String> getProjectNames() {
+        List<String> names = logInfoDao.getProjectNames();
+        return names;
+    }
+
     @Override
     public List<LogInfo> getAll() {
         return logInfoDao.getAll();
     }
 
     @Override
-    public void countActiveUserAndRequestEveryHour(String projectNames) {
-        String[] names = projectNames.split(",");
-        Arrays.asList(names).parallelStream().forEach(name ->{
+    public void countActiveUserAndRequestEveryHour() {
+        List<String> names = this.getProjectNames();
+        names.parallelStream().forEach(name ->{
+            LOGGER.info("【scalog-task】开始统计 {} 项目日志数据",name);
             Integer num = 1;
             while (true) {
                 List<HourMetric> hourMetrics = logInfoDao.countActiveUserAndRequestEveryHour(name,num);
@@ -45,31 +54,36 @@ public class LogInfoServiceImpl implements LogInfoService {
                         hourMetric.setId(SourceUtil.generateId());
                         hourMetric.setGmtCreate(new Date());
                         hourMetric.setGmtModified(new Date());
+                        LOGGER.info("服务[{}]{}统计数据已经生成",name,hourMetric.getCreateTime().toString());
                         hourMetricDao.insert(hourMetric);
                     });
-                    num ++;
-                } else {
+                }
+                num++;
+                //最多向前统计30天
+                if(num > 30){
                     break;
                 }
             }
         });
+        LOGGER.info("历史数据统计结束");
     }
 
     @Override
-    public void countActiveUserAndRequestEveryHourYesterday(String projectNames) {
-        String[] names = projectNames.split(",");
-        Arrays.asList(names).parallelStream().forEach(name->{
-            LOGGER.info("scalog-task-----------开始统计 {}:{} 项目日志数据-------------", LocalDate.now().minusDays(1).toString(),name);
+    public void countActiveUserAndRequestEveryHourYesterday() {
+        List<String> names = this.getProjectNames();
+        names.parallelStream().forEach(name->{
+            LOGGER.info("【scalog-task】开始统计 {} 项目 {} 日志数据",name,LocalDate.now().minusDays(1));
             List<HourMetric> hourMetrics = logInfoDao.countActiveUserAndRequestEveryHour(name,1);
             if(hourMetrics.size() > 0){
                 hourMetrics.parallelStream().forEach(hourMetric -> {
                     hourMetric.setId(SourceUtil.generateId());
                     hourMetric.setGmtCreate(new Date());
                     hourMetric.setGmtModified(new Date());
+                    LOGGER.info("服务[{}]{}统计数据已经生成 ",name,hourMetric.getCreateTime().toString());
                     hourMetricDao.insert(hourMetric);
                 });
             }
-            LOGGER.info("scalog-task----------- {}:{} 项目日志数据统计结束-------------", LocalDate.now().minusDays(1).toString(),name);
         });
+        LOGGER.info("{} 数据统计结束",LocalDate.now().minusDays(1));
     }
 }

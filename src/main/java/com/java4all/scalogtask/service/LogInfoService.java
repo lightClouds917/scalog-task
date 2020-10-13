@@ -8,20 +8,26 @@ import java.util.List;
  */
 public interface LogInfoService {
 
+    /**
+     * 获取所有的项目名称
+     * @return
+     */
+    List<String> getProjectNames();
+
+    /**
+     * 测试接口
+     * @return
+     */
     List<LogInfo> getAll();
 
     /**
      * 统计历史数据进入hour_metric
-     * @param projectNames 项目名称，以英文逗号分隔： eg: middle_user,middle_message,middle_credit
-     *                     项目名称对应scalog.projectName的值
      */
-    void countActiveUserAndRequestEveryHour(String projectNames);
+    void countActiveUserAndRequestEveryHour();
 
     /**
      * 统计前一天数据进入hour_metric
-     * @param projectNames 项目名称，以英文逗号分隔： eg: middle_user,middle_message,middle_credit
-     *                     项目名称对应scalog.projectName的值
      */
-    void countActiveUserAndRequestEveryHourYesterday(String projectNames);
+    void countActiveUserAndRequestEveryHourYesterday();
 
 }
